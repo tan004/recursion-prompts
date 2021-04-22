@@ -207,6 +207,7 @@ var multiply = function (x, y) {
 
     if(y < 0)
     console.log(x+ '   '+y);
+
     return -multiply(x,-y);
 
 };
@@ -215,7 +216,23 @@ console.log(multiply(2,-8));
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
 var divide = function (x, y) {
+    let count = 0;
+    if(y === 0){
+        return 0;
+    }
+    if(x === 0){
+        return count;
+    }
+
+    if(y > 0){
+        x -= divide(x-y, y)
+       count++;
+
+        }
+
+    return count;
 };
+console.log(divide(6,2));
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
 // integers is the greatest integer that divides both x and y with no remainder.
@@ -230,22 +247,70 @@ var gcd = function (x, y) {
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function (str1, str2) {
+    if(str1.length !== str2.length){
+        return false;
+    }
+
+    if(str1.length === 0){
+        return true;
+    }
+
+    if(str1[0] !== str2[0]){
+        return false;
+    }else{
+        return (compareStr(str1.slice(1),str2.slice(1)));
+    }
 };
+
+console.log(compareStr('house', 'houses'));// false;
+console.log(compareStr('tomato', 'tomato')); // true
+
+
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function (str) {
+    let arr = [];
+    if(str.length === 0){
+        return [];
+    }
+
+    if(str.length > 0){
+        arr.push(str[0], ...createArray(str.slice(1)))
+    }
+return arr;
 };
+console.log(createArray('house'))
+console.log(createArray('tomato'))
+
+
 
 // 17. Reverse the order of an array
 var reverseArr = function (array) {
+    let res =[]
+    if(array.length === 0){
+        return [];
+    }
+
+    let last = array.pop();
+    res.push(last, ...reverseArr(array))
+
+    return res;
 };
+console.log(reverseArr(['h','o','u','s','e']))
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function (value, length) {
+    if(length ===0){
+        return [];
+    }
+    return [value, ...buildList(value,length-1)]
 };
+console.log(buildList(0,5)) // [0,0,0,0,0]
+ console.log(buildList(7,3)) // [7,7,7]
+
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
 // For multiples of three, output 'Fizz' instead of the number.
@@ -253,7 +318,33 @@ var buildList = function (value, length) {
 // For numbers which are multiples of both three and five, output “FizzBuzz” instead of the number.
 // fizzBuzz(5) // ['1','2','Fizz','4','Buzz']
 var fizzBuzz = function (n) {
+    let res = [];
+    if(n === 0){
+        return [];
+    }
+
+    if(n ===3){
+        res.push('Fizz');
+         fizzBuzz(n-1);
+
+
+    }else if(n === 5){
+        res.push('Buzz');
+        fizzBuzz(n-1)
+
+
+    }else if((n % 3 === 0 && n % 5 ===0)){
+        res.push('FizzBuzz');
+      fizzBuzz(n-1);
+
+
+    }else{
+        res.push(n);
+        fizzBuzz(n-1);
+    }
+    return res;
 };
+console.log(fizzBuzz(5)) // ['1','2','Fizz','4','Buzz'])
 
 // 20. Count the occurrence of a value in a list.
 // countOccurrence([2,7,4,4,1,4], 4) // 3
