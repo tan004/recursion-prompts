@@ -583,34 +583,103 @@ console.log(letterTally('potato')); // {p:1, o:2, t:2, a:1})
 // compress([1,2,2,3,4,4,5,5,5]) // [1,2,3,4,5]
 // compress([1,2,2,3,4,4,2,5,5,5,4,4]) // [1,2,3,4,2,5,4]
 var compress = function (list) {
+    let first = list[0];
+
+    for(let i =1; i< list.length; i++){
+
+        if(first !== list[i]){
+            first = list[i]
+        }else{
+            compress(list.splice(i,1))
+            i--;
+        }
+    }
+return list;
 };
+console.log(compress([1,2,2,3,4,4,5,5,5]) )// [1,2,3,4,5]
+console.log(compress([1,2,2,3,4,4,2,5,5,5,4,4])) // [1,2,3,4,2,5,4]
 
 // 33. Augment every element in a list with a new value where each element is an array
 // itself.
 // augmentElements([[],[3],[7]], 5); // [[5],[3,5],[7,5]]
-var augmentElements = function (array, aug) {
+var augmentElements = function (array, aug, i = 0) {
+
+    if(i === array.length) return array;
+
+        let el = array[i];
+        if(Array.isArray(el)){
+            el.push(aug);
+
+        }
+    return augmentElements(array,aug,++i);
 };
+console.log(augmentElements([[],[3],[7]], 5)); // [[5],[3,5],[7,5]]
 
 // 34. Reduce a series of zeroes to a single 0.
 // minimizeZeroes([2,0,0,0,1,4]) // [2,0,1,4]
 // minimizeZeroes([2,0,0,0,1,0,0,4]) // [2,0,1,0,4]
-var minimizeZeroes = function (array) {
+var minimizeZeroes = function (array,index =0) {
+
+    if(index === array.length)return array;
+
+    for(let i = 0; i< array.length; i++){
+
+        if( array[i]===0 && array[i+1] ===0 ){
+            array.splice(i+1,1);
+        }
+    }
+    return minimizeZeroes(array,index + 1);
 };
+console.log(minimizeZeroes([2,0,0,0,1,4])) // [2,0,1,4]
+console.log(minimizeZeroes([2,0,0,0,1,0,0,4])) // [2,0,1,0,4]
+
 
 // 35. Alternate the numbers in an array between positive and negative regardless of
 // their original sign. The first number in the index always needs to be positive.
 // alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4]
 // alternateSign([-2,-7,8,3,-1,4]) // [2,-7,8,-3,1,-4]
-var alternateSign = function (array) {
+var alternateSign = function (array,index=0) {
+    if(index === array.length) return array;
+
+        if(index % 2 === 1 && array[index] > 0){
+           array[index] = -array[index];
+        }
+
+        if(index % 2 === 0){
+           array[index] = Math.abs(array[index])
+        }
+
+return alternateSign(array, index + 1);
 };
+console.log(alternateSign([2,7,8,3,1,4])) // [2,-7,8,-3,1,-4]
+console.log(alternateSign([-2,-7,8,3,-1,4])) // [2,-7,8,-3,1,-4]
 
 // 36. Given a string, return a string with digits converted to their word equivalent.
 // Assume all numbers are single digits (less than 10).
 // numToText("I have 5 dogs and 6 ponies"); // "I have five dogs and six ponies"
-var numToText = function (str) {
+
+
+var numToText = function (str,i=0,res=[]) {
+const arr = ['zero','one','two','three','four','five','six',
+'seven','eight','nine']
+const number = ['0','1','2','3','4','5','6','7','8','9']
+    let split = str.split(' ');
+
+    if(split.length === i)return res.join(' ');
+
+    if(number.includes(split[i])){
+        res.push(arr[split[i]])
+    }else{
+        res.push(split[i])
+    }
+
+//    res.push(convert(split[i]))
+
+
+    return numToText(str,i+1,res);
 };
 
-
+console.log(numToText("I have 5 dogs and 6 ponies")); // "I have five dogs and six ponies"
 // *** EXTRA CREDIT ***
 
 // 37. Return the number of times a tag occurs in the DOM.
